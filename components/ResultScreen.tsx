@@ -100,17 +100,17 @@ export function ResultScreen({ result }: { result: PlanResult }) {
         </p>
         {goalCalc.status === "behind" && (
           <p className="mt-1 text-sm text-amber-800">
-            That's {peso.format(goalCalc.gapPerMonth)} more per month than you're currently saving.
+            That&apos;s {peso.format(goalCalc.gapPerMonth)} more per month than you&apos;re currently saving.
           </p>
         )}
         {goalCalc.status === "ahead" && (
           <p className="mt-1 text-sm text-emerald-700">
-            You're currently saving {peso.format(goalCalc.gapPerMonth)} more per month than required — nice work.
+            You&apos;re currently saving {peso.format(goalCalc.gapPerMonth)} more per month than required — nice work.
           </p>
         )}
         <dl className="mt-4 grid grid-cols-2 gap-4 text-sm">
           <div>
-            <dt className="text-slate-500">Total savings you'll need by then</dt>
+            <dt className="text-slate-500">Total savings you&apos;ll need by then</dt>
             <dd className="font-medium text-slate-800">{peso.format(goalCalc.targetRetirementCorpus)}</dd>
           </div>
           <div>
@@ -118,7 +118,7 @@ export function ResultScreen({ result }: { result: PlanResult }) {
             <dd className="font-medium text-slate-800">{goalCalc.yearsToRetirement}</dd>
           </div>
           <div>
-            <dt className="text-slate-500">What you'll have at your current pace</dt>
+            <dt className="text-slate-500">What you&apos;ll have at your current pace</dt>
             <dd className="font-medium text-slate-800">
               {peso.format(goalCalc.projectedCorpusAtCurrentRate)}
             </dd>
@@ -130,8 +130,8 @@ export function ResultScreen({ result }: { result: PlanResult }) {
         </dl>
         {goalCalc.assumptions.withdrawalRate !== null && (
           <p className="mt-3 text-xs text-slate-400">
-            Assumes you'll draw down {(goalCalc.assumptions.withdrawalRate * 100).toFixed(0)}% of your
-            savings per year in retirement, used to work out the total amount you'll need saved up.
+            Assumes you&apos;ll draw down {(goalCalc.assumptions.withdrawalRate * 100).toFixed(0)}% of your
+            savings per year in retirement, used to work out the total amount you&apos;ll need saved up.
           </p>
         )}
       </div>
