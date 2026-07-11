@@ -62,6 +62,17 @@ export function getDefaultAllocation(riskProfile: RiskProfile): AllocationPercen
   return DEFAULT_ALLOCATION_BY_RISK_PROFILE[riskProfile];
 }
 
+/** The actual rates.json figures relevant to a given risk profile — HYSA, MP2, and the matching UITF tier. */
+export function getRatesForRiskProfile(
+  riskProfile: RiskProfile
+): { hysaRate: number; mp2Rate: number; uitfRate: number } {
+  return {
+    hysaRate: getRatePct("hysa"),
+    mp2Rate: getRatePct("mp2"),
+    uitfRate: getRatePct(UITF_VEHICLE_ID_BY_RISK_PROFILE[riskProfile]),
+  };
+}
+
 /**
  * Weighted-average blended annual return (as a decimal, e.g. 0.0429 for
  * 4.29%), using the given risk profile's default allocation weights against
@@ -69,9 +80,7 @@ export function getDefaultAllocation(riskProfile: RiskProfile): AllocationPercen
  */
 export function getBlendedAnnualReturnRate(riskProfile: RiskProfile): number {
   const allocation = getDefaultAllocation(riskProfile);
-  const hysaRate = getRatePct("hysa");
-  const mp2Rate = getRatePct("mp2");
-  const uitfRate = getRatePct(UITF_VEHICLE_ID_BY_RISK_PROFILE[riskProfile]);
+  const { hysaRate, mp2Rate, uitfRate } = getRatesForRiskProfile(riskProfile);
 
   const blendedPct =
     (allocation.emergencyFundHysa / 100) * hysaRate +

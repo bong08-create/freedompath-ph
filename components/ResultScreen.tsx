@@ -24,6 +24,10 @@ export interface PlanResult {
   };
   uitfTierLabel: string;
   blendedAnnualReturnRatePct: number;
+  narrative: string;
+  levers: string[];
+  sources: { name: string; rate_pct: number; source: string; as_of: string }[];
+  ratesLastReviewed: string;
 }
 
 const peso = new Intl.NumberFormat("en-PH", {
@@ -53,6 +57,10 @@ export function ResultScreen({ result }: { result: PlanResult }) {
     riskExplanation,
     blendedAnnualReturnRatePct,
     uitfTierLabel,
+    narrative,
+    levers,
+    sources,
+    ratesLastReviewed,
   } = result;
   const status = STATUS_COPY[goalCalc.status];
   // The % split applies to your recommended monthly savings amount. If
@@ -71,6 +79,10 @@ export function ResultScreen({ result }: { result: PlanResult }) {
           Risk profile: <span className="font-medium text-slate-700">{RISK_LABEL[riskProfile]}</span>
         </p>
         <p className="mt-2 text-sm text-slate-600">{riskExplanation}</p>
+      </div>
+
+      <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+        <p className="text-sm text-slate-700">{narrative}</p>
       </div>
 
       <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
@@ -165,6 +177,37 @@ export function ResultScreen({ result }: { result: PlanResult }) {
         <p className="mt-3 text-xs text-slate-400">
           This is a simplified, self-reported estimate — not an official SSS computation.
         </p>
+      </div>
+
+      {levers.length > 0 && (
+        <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+          <h2 className="text-lg font-semibold">Ways to Close the Gap</h2>
+          <ul className="mt-3 list-inside list-disc space-y-2 text-sm text-slate-700">
+            {levers.map((lever, i) => (
+              <li key={i}>{lever}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+        <h2 className="text-lg font-semibold">Sources</h2>
+        <p className="mt-1 text-xs text-slate-400">Rates last reviewed {ratesLastReviewed}</p>
+        <ul className="mt-3 space-y-2 text-sm">
+          {sources.map((s) => (
+            <li key={s.name} className="flex items-center justify-between gap-4">
+              <span className="text-slate-700">{s.name}</span>
+              <a
+                href={s.source}
+                target="_blank"
+                rel="noreferrer"
+                className="shrink-0 text-xs text-slate-500 underline hover:text-slate-700"
+              >
+                {s.rate_pct}% (as of {s.as_of})
+              </a>
+            </li>
+          ))}
+        </ul>
       </div>
 
       <Disclaimer />
