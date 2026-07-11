@@ -1,0 +1,27 @@
+# .cursorrules — FreedomPath PH
+
+## Stack
+Next.js 14 (App Router, TypeScript, strict mode) + Tailwind CSS + Vercel AI SDK (OpenAI) + Supabase (Postgres + Auth). Deployed on Vercel.
+
+## Code Style
+- TypeScript everywhere, no `any` unless truly unavoidable (and comment why).
+- Functional React components only. Server components by default; add `"use client"` only where interactivity is required (forms, result screen state).
+- Tailwind utility classes only — no separate CSS files, no CSS-in-JS libraries.
+- Keep components small and single-purpose. Business logic (SSS calc, allocation math, AI prompt construction) belongs in `/lib`, not inline in components.
+
+## Project-Specific Rules (do not deviate without asking)
+- Never hardcode API keys or Supabase credentials. Always read from `process.env`. Add new variables to `.env.example` (empty values) when introduced.
+- The AI recommendation layer must only cite rates that exist in `data/rates.json`, passed in as context. Never let the model free-generate a numeric rate. Keep the post-generation guardrail that checks for this.
+- SSS pension math (`lib/sss.ts`) and required-monthly-savings math (`lib/goalCalc.ts`) are deterministic functions — never send either calculation to the LLM. The AI narrates their output; it never computes the numbers itself.
+- Every AI-generated recommendation screen must render the shared `<Disclaimer />` component — no exceptions, no conditional hiding.
+- Validate every form with a zod schema shared between client and the corresponding API route — don't validate only client-side.
+- Do not implement anything listed as out-of-scope in `PRD.md` (individual stock/bond trading, named fund/product recommendations, push notifications, payment processing, multi-plan history) unless explicitly asked to expand scope.
+
+## Testing
+Write unit tests alongside new logic in `/lib` — at minimum cover: `sss.ts` calculation correctness, allocation percentages summing to 100, and the risk-classifier fallback path. Use Vitest or the project's existing test runner — check `package.json` before introducing a new one.
+
+## Git
+Commit in small, logical units (schema, calculation logic, form UI, AI integration, save/revisit flow, rate updates) rather than large multi-feature dumps — this project needs a legible, meaningful commit history.
+
+## When in doubt
+Prefer the simplest implementation that satisfies `spec.md`. This is a scoped MVP for a course deadline — do not add configurability, abstraction, or features beyond what spec.md and PRD.md describe.
