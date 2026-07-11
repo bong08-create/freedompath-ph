@@ -5,6 +5,14 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 
 /**
+ * sessionStorage key used to carry an in-progress plan across the
+ * sign-up/sign-in redirect, so the user isn't forced to re-fill and
+ * regenerate the whole form just to save something they already generated.
+ * Restored (and cleared) by components/PlanFlow.tsx on mount.
+ */
+export const PENDING_PLAN_STORAGE_KEY = "freedompath_pending_plan";
+
+/**
  * Save & Revisit Plan (spec.md §2.6). Unauthenticated users can still
  * generate a plan — this panel only prompts sign-up/sign-in when they
  * actually try to save it.
@@ -62,12 +70,18 @@ export function SavePlanPanel({ intake, result }: { intake: unknown; result: unk
           <div className="mt-4 flex gap-3">
             <Link
               href="/auth/sign-up?redirectTo=/plan"
+              onClick={() =>
+                sessionStorage.setItem(PENDING_PLAN_STORAGE_KEY, JSON.stringify({ intake, result }))
+              }
               className="rounded-lg bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-700"
             >
               Create account
             </Link>
             <Link
               href="/auth/sign-in?redirectTo=/plan"
+              onClick={() =>
+                sessionStorage.setItem(PENDING_PLAN_STORAGE_KEY, JSON.stringify({ intake, result }))
+              }
               className="rounded-lg border border-slate-300 px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
             >
               Sign in

@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useState, useEffect, FormEvent } from "react";
 import { intakeFormSchema, riskQuestionOptions, type IntakeFormValues } from "@/lib/schemas";
 import { ResultScreen, type PlanResult } from "@/components/ResultScreen";
-import { SavePlanPanel } from "@/components/SavePlanPanel";
+import { SavePlanPanel, PENDING_PLAN_STORAGE_KEY } from "@/components/SavePlanPanel";
 
 type GoalType = "amount" | "income";
 type MemberType = "employed" | "self-employed" | "voluntary" | "ofw";
@@ -140,6 +140,26 @@ export function PlanFlow({ initialIntake, initialResult }: PlanFlowProps) {
   const [result, setResult] = useState<PlanResult | null>(initialResult ?? null);
   const [lastIntake, setLastIntake] = useState<unknown | null>(initialIntake ?? null);
   const [editing, setEditing] = useState(false);
+
+  // Restore a plan the user generated before being sent off to sign up/in to
+  // save it (see components/SavePlanPanel.tsx), so they land back on their
+  // already-generated result instead of a blank form and don't have to
+  // re-fill + regenerate just to click "Save Plan."
+  useEffect(() => {
+    if (initialResult) return; // /plan/saved already has explicit data — don't override it
+    const pending = sessionStorage.getItem(PENDING_PLAN_STORAGE_KEY);
+    if (!pending) return;
+    try {
+      const { intake, result: pendingResult } = JSON.parse(pending);
+      setResult(pendingResult);
+      setLastIntake(intake);
+    } catch {
+      // malformed/stale data — ignore
+    } finally {
+      sessionStorage.removeItem(PENDING_PLAN_STORAGE_KEY);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function update<K extends keyof FormState>(key: K, value: FormState[K]) {
     setForm((prev) => ({ ...prev, [key]: value }));
