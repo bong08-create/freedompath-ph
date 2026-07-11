@@ -1,0 +1,50 @@
+{
+  "last_reviewed": "2026-07-11",
+  "vehicles": [
+    {
+      "id": "hysa",
+      "category": "emergency_fund",
+      "name": "High-yield digital bank savings (representative rate)",
+      "rate_pct": 2.3,
+      "rate_type": "variable_annual_base_rate",
+      "source": "https://www.cimbbank.com.ph/en/help-and-support/faqs/savings-account/gsave-account/what-is-the-interest-rate-of-the-gsave-account.html",
+      "as_of": "2026-06-01"
+    },
+    {
+      "id": "mp2",
+      "category": "government_savings",
+      "name": "Pag-IBIG MP2",
+      "rate_pct": 7.12,
+      "rate_type": "declared_annual_dividend",
+      "source": "https://www.gmanetwork.com/news/topstories/nation/978147/pag-ibig-announces-record-64-34b-dividend-for-2025-regular-savings-earn-6-62-m-2-yields-7-12/story/",
+      "as_of": "2026-02-27"
+    },
+    {
+      "id": "uitf_conservative",
+      "category": "uitf_money_market_or_bond",
+      "name": "UITF – Money Market/Bond Fund (indicative)",
+      "rate_pct": 4.33,
+      "rate_type": "trailing_1yr_return",
+      "source": "https://www.bpi.com.ph/content/dam/bpi-wealth/investment-funds-monitor-pdfs/2025/08-august/Investment%20Funds%20Monitor%2008.15.2025.pdf",
+      "as_of": "2025-08-14"
+    },
+    {
+      "id": "uitf_moderate",
+      "category": "uitf_balanced",
+      "name": "UITF – Balanced Fund (indicative)",
+      "rate_pct": 4.53,
+      "rate_type": "trailing_1yr_return",
+      "source": "https://www.bpi.com.ph/content/dam/bpi-wealth/investment-funds-monitor-pdfs/2025/08-august/Investment%20Funds%20Monitor%2008.15.2025.pdf",
+      "as_of": "2025-08-14"
+    },
+    {
+      "id": "uitf_aggressive",
+      "category": "uitf_equity",
+      "name": "UITF – Equity Fund (indicative)",
+      "rate_pct": 6.65,
+      "rate_type": "trailing_1yr_return",
+      "source": "https://www.bpi.com.ph/content/dam/bpi-wealth/investment-funds-monitor-pdfs/2025/08-august/Investment%20Funds%20Monitor%2008.15.2025.pdf",
+      "as_of": "2025-08-14"
+    }
+  ]
+}
