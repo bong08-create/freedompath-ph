@@ -8,6 +8,18 @@
  */
 import { z } from "zod";
 
+// --- Auth (sign up / sign in) ----------------------------------------------
+// Note on hard rule #6: there's no separate custom API route to re-validate
+// this server-side — Supabase Auth's own API is the authoritative server-side
+// validator (it enforces its own email format and min-password-length rules
+// independent of this schema). This zod schema is a client-side UX layer on
+// top of that, not the only gate.
+export const authSchema = z.object({
+  email: z.string().email("Enter a valid email address"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+});
+export type AuthValues = z.infer<typeof authSchema>;
+
 export const memberTypeSchema = z.enum([
   "employed",
   "self-employed",
