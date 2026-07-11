@@ -1,12 +1,23 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { Suspense, useState, FormEvent } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { authSchema } from "@/lib/schemas";
 import { createClient } from "@/lib/supabase/client";
 
+// useSearchParams() requires a Suspense boundary for Next.js's production
+// build (static prerendering) — dev mode doesn't enforce this, which is why
+// this only surfaced on Vercel's build, not `npm run dev`.
 export default function SignUpPage() {
+  return (
+    <Suspense fallback={null}>
+      <SignUpForm />
+    </Suspense>
+  );
+}
+
+function SignUpForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirectTo = searchParams.get("redirectTo") ?? "/plan";
