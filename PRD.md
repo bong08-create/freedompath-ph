@@ -15,11 +15,18 @@ Primary persona: **"Anna," 26-35**, working in corporate/BPO/tech in Metro Manil
 
 ## 3. Core Features (MVP Scope)
 
+*Full inputs/outputs and detailed acceptance criteria for each feature live in `spec.md` §2 — the one-liners below are the testable pass/fail bar for each feature at the PRD level.*
+
 1. **Goal & Profile Intake** — short, conversational form: age, income, current savings/investments by category, target goal (amount or retirement age), and 4-5 behavioral risk questions.
+   *Acceptance criteria: submission is blocked with inline errors on invalid/missing required fields, validated on both client and server.*
 2. **AI Risk Profiling** — classifies risk tolerance from behavioral answers (not a generic quiz label) with a plain-language explanation of why.
+   *Acceptance criteria: always returns one of `conservative | moderate | aggressive`, with a deterministic rule-based fallback if the AI response fails to parse.*
 3. **Personalized Gap Analysis & Allocation Recommendation** — AI-generated: required monthly savings vs. current trajectory, plus a risk-appropriate split across three vehicle categories: (a) emergency fund/HYSA, (b) **Pag-IBIG MP2** (tax-free, government-backed, 5-year term, ~7.12% 2025 dividend — hugely popular in the Philippines and the single vehicle mentioned directly in our own validation evidence from r/phinvest), and (c) a **UITF risk tier** (money market/bond fund for conservative profiles, balanced fund for moderate, equity fund for aggressive) — giving real bond and stock market exposure through professionally-managed fund tiers rather than picking individual securities. Grounded in a maintained, timestamped rate/dividend/fund-performance reference table (not the model's memory) — with visible sources, "last updated" date, and a clear "educational, not licensed financial advice" disclaimer.
+   *Acceptance criteria: allocation percentages always sum to exactly 100; every rate cited must exist in `data/rates.json` or the response is rejected/regenerated; the disclaimer is always present.*
 4. **SSS Pension Baseline Estimate** — uses the public SSS pension formula to show an estimated monthly SSS payout, layered into the gap analysis (validated as a sharp, standalone hook in idea validation).
+   *Acceptance criteria: pure deterministic function matching the RA 11199 formula, unit-tested against known worked examples — never AI-generated.*
 5. **Save & Revisit Plan** — lightweight account to save and return to update a plan, creating a built-in reason to come back without requiring full notification infrastructure in v1.
+   *Acceptance criteria: unauthenticated users can still generate a plan; saving prompts sign-up/sign-in first; a returning signed-in user lands on their saved plan, never a blank form.*
 
 ## 4. Out of Scope (v1)
 
